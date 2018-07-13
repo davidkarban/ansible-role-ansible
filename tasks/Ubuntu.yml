@@ -1,0 +1,5 @@
+- name: Ensure ppa repository is installed
+  apt_repository: 
+    repo: 'ppa:ansible/ansible'
+    state: 'present'
+
