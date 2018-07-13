@@ -1,20 +1,23 @@
 ---
 # tasks file for ansible
 - name: Load the OS specific variables
-  tags:
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Install the ansible in Redhat derivates
-  tags:
-  yum: name={{ item }} state=present
-  with_items: ansible_pkgs
+  yum:
+    name: "{{ ansible_pkgs }}"
+    enablerepo: "'epel"
+    state: present
   when: ansible_os_family == 'RedHat'
 
+- include_playbook: Ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+
 - name: Install the packages in Debian derivates
-  tags:
-  apt: name={{ item }} state=present update_cache=yes cache_valid_time=600
-  with_items: ansible_pkgs
-  environment:
-    # prevent mysql from autostart after installation
-    RUNLEVEL: 1
-  when: ansible_os_family == 'Debian
+  apt:
+    name: "{{ ansible_pkgs }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 600
+  when:
+    - ansible_os_family == 'Debian' 
