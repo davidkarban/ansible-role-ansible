@@ -6,7 +6,7 @@
 - name: Install the ansible in Redhat derivates
   yum:
     name: "{{ ansible_pkgs }}"
-    enablerepo: "'epel"
+    enablerepo: "epel"
     state: present
   when: ansible_os_family == 'RedHat'
 
